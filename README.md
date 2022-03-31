@@ -8,7 +8,8 @@ This repository exposes to Python Uniform ORB feature point extraction.
 
 ### Building from source
 
-Clone the repository and its submodules:
+CPP OpenCV3 and Eigen3 should be installed as a library first. If not please install first. Then clone the repository
+and its submodules:
 
 ```
 git clone --recursive git@github.com/LiXin97/pyorb.git
