@@ -75,7 +75,7 @@ class CMakeBuild(build_ext):
 
 
 setup(
-    name='pyorb',
+    name='pyorbfeature',
     version='0.1.0',
     author='xinli',
     author_email='lisin97@pku.edu.cn',
