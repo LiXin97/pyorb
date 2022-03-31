@@ -39,7 +39,7 @@ py::dict extract(
 
     std::vector<Eigen::Vector3d> KeyPoints;
 
-    std::cout << "keypts.size() = " << keypts.size() << std::endl;
+//    std::cout << "keypts.size() = " << keypts.size() << std::endl;
 
     for (const auto &kpt: keypts) {
         KeyPoints.emplace_back(kpt.pt.x, kpt.pt.y, kpt.response);
