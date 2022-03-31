@@ -12,7 +12,7 @@ CPP OpenCV3 and Eigen3 should be installed as a library first. If not please ins
 and its submodules:
 
 ```
-git clone --recursive git@github.com/LiXin97/pyorb.git
+git clone --recursive https://github.com/LiXin97/pyorb.git
 ```
 
 And finally build PyORB:
