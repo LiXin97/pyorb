@@ -18,5 +18,6 @@ PYBIND11_MODULE(pyorb, m) {
     // Homography Decomposition.
     m.def("extract", &extract,
           py::arg("img_path"),
+          py::arg("num_points"),
           "Get Orb points.");
 }

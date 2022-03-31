@@ -18,5 +18,5 @@ include_directories(${OpenCV_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR} ${PROJECT_SOURC
 
 add_subdirectory(pybind11)
 
-pybind11_add_module(pyorb main.cc orb.cpp orb.hpp)
+pybind11_add_module(pyorb main.cc orb.cpp)
 target_link_libraries(pyorb PRIVATE ${OpenCV_LIBS})

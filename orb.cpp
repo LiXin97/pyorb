@@ -7,6 +7,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/imgproc.hpp>
+#include <iostream>
 
 
 orb_extractor::orb_extractor(const unsigned int max_num_keypts,
@@ -148,6 +149,7 @@ void orb_extractor::extract(const cv::_InputArray &in_image, const cv::_InputArr
         descriptors = out_descriptors.getMat();
     }
 
+    std::cout << "num_keypts = " << num_keypts << std::endl;
     keypts.clear();
     keypts.reserve(num_keypts);
 
