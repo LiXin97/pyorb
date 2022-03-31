@@ -11,7 +11,7 @@ This repository exposes to Python Uniform ORB feature point extraction.
 Clone the repository and its submodules:
 
 ```
-git clone --recursive git@github.com/LiXin97/pyorb.git
+git clone --recursive https://github.com/LiXin97/pyorb.git
 ```
 
 And finally build PyORB:
