@@ -5,11 +5,11 @@
 #ifndef ORB_ORB_HPP
 #define ORB_ORB_HPP
 
-#include <vector>
-#include <list>
 #include <array>
+#include <list>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
+#include <vector>
 
 #include "orb_point_pairs.h"
 
@@ -88,7 +88,6 @@ public:
     std::vector<float> get_inv_level_sigma_sq() const;
 
 protected:
-
     //! Number of feature points to be extracted
     unsigned int max_num_keypts_;
 
@@ -102,8 +101,6 @@ protected:
 
 class orb_extractor : public extractor {
 public:
-
-
     //    //! Constructor
     //    orb_extractor(const unsigned int max_num_keypts,
     //                  const float scale_factor, const unsigned int num_levels,
@@ -202,4 +199,4 @@ private:
     std::vector<std::vector<float>> mask_rects_;
 };
 
-#endif //ORB_ORB_HPP
+#endif//ORB_ORB_HPP

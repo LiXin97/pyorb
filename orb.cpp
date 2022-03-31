@@ -4,10 +4,10 @@
 
 #include "orb.hpp"
 
+#include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/imgproc.hpp>
-#include <iostream>
 
 
 orb_extractor::orb_extractor(const unsigned int max_num_keypts,
@@ -149,7 +149,7 @@ void orb_extractor::extract(const cv::_InputArray &in_image, const cv::_InputArr
         descriptors = out_descriptors.getMat();
     }
 
-//    std::cout << "num_keypts = " << num_keypts << std::endl;
+    //    std::cout << "num_keypts = " << num_keypts << std::endl;
     keypts.clear();
     keypts.reserve(num_keypts);
 
@@ -399,8 +399,7 @@ std::vector<cv::KeyPoint> orb_extractor::find_keypoints_with_max_response(std::l
 }
 
 
-void
-orb_extractor::compute_fast_keypoints(std::vector<std::vector<cv::KeyPoint>> &all_keypts, const cv::Mat &mask) const {
+void orb_extractor::compute_fast_keypoints(std::vector<std::vector<cv::KeyPoint>> &all_keypts, const cv::Mat &mask) const {
     all_keypts.resize(num_levels_);
 
     // An anonymous function which checks mask(image or rectangle)
@@ -459,8 +458,7 @@ orb_extractor::compute_fast_keypoints(std::vector<std::vector<cv::KeyPoint>> &al
 
                 // Pass FAST computation if one of the corners of a patch is in the mask
                 if (!mask.empty()) {
-                    if (is_in_mask(min_y, min_x, scale_factor) || is_in_mask(max_y, min_x, scale_factor)
-                        || is_in_mask(min_y, max_x, scale_factor) || is_in_mask(max_y, max_x, scale_factor)) {
+                    if (is_in_mask(min_y, min_x, scale_factor) || is_in_mask(max_y, min_x, scale_factor) || is_in_mask(min_y, max_x, scale_factor) || is_in_mask(max_y, max_x, scale_factor)) {
                         continue;
                     }
                 }
@@ -619,9 +617,7 @@ void orb_extractor::compute_orb_descriptor(const cv::KeyPoint &keypt, const cv::
     const auto step = static_cast<int>(image.step);
 
 #ifdef USE_SSE_ORB
-#if !((defined _MSC_VER && defined _M_X64)                            \
-      || (defined __GNUC__ && defined __x86_64__ && defined __SSE3__) \
-      || CV_SSE3)
+#if !((defined _MSC_VER && defined _M_X64) || (defined __GNUC__ && defined __x86_64__ && defined __SSE3__) || CV_SSE3)
 #error "The processor is not compatible with SSE. Please configure the CMake with -DUSE_SSE_ORB=OFF."
 #endif
 
@@ -634,20 +630,19 @@ void orb_extractor::compute_orb_descriptor(const cv::KeyPoint &keypt, const cv::
     __m128i _vi;
     alignas(16) int32_t ii[4];
 
-#define COMPARE_ORB_POINTS(shift)                          \
-    (_point_pairs = _mm_load_ps(orb_point_pairs + shift),  \
-     _mul1 = _mm_mul_ps(_point_pairs, _trig1),             \
-     _mul2 = _mm_mul_ps(_point_pairs, _trig2),             \
-     _vs = _mm_hadd_ps(_mul1, _mul2),                      \
-     _vi = _mm_cvtps_epi32(_vs),                           \
-     _mm_store_si128(reinterpret_cast<__m128i*>(ii), _vi), \
+#define COMPARE_ORB_POINTS(shift)                           \
+    (_point_pairs = _mm_load_ps(orb_point_pairs + shift),   \
+     _mul1 = _mm_mul_ps(_point_pairs, _trig1),              \
+     _mul2 = _mm_mul_ps(_point_pairs, _trig2),              \
+     _vs = _mm_hadd_ps(_mul1, _mul2),                       \
+     _vi = _mm_cvtps_epi32(_vs),                            \
+     _mm_store_si128(reinterpret_cast<__m128i *>(ii), _vi), \
      center[ii[0] * step + ii[2]] < center[ii[1] * step + ii[3]])
 
 #else
 
-#define GET_VALUE(shift)                                                                                        \
-    (center[cvRound(*(orb_point_pairs + shift) * sin_angle + *(orb_point_pairs + shift + 1) * cos_angle) * step \
-            + cvRound(*(orb_point_pairs + shift) * cos_angle - *(orb_point_pairs + shift + 1) * sin_angle)])
+#define GET_VALUE(shift) \
+    (center[cvRound(*(orb_point_pairs + shift) * sin_angle + *(orb_point_pairs + shift + 1) * cos_angle) * step + cvRound(*(orb_point_pairs + shift) * cos_angle - *(orb_point_pairs + shift + 1) * sin_angle)])
 
 #define COMPARE_ORB_POINTS(shift) \
     (GET_VALUE(shift) < GET_VALUE(shift + 2))

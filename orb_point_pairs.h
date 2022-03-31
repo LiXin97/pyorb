@@ -268,4 +268,4 @@ alignas(16) static constexpr float orb_point_pairs[orb_point_pairs_size] = {
 };
 
 
-#endif // ORB_POINT_PAIRS_H
+#endif// ORB_POINT_PAIRS_H
