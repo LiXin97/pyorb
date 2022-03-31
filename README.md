@@ -8,16 +8,13 @@ This repository exposes to Python Uniform ORB feature point extraction.
 
 ### Building from source
 
-Alternatively, we explain below how to compile PyCOLMAP from source. COLMAP should first be installed as a library
-following [the instructions](https://colmap.github.io/install.html). We require the latest commit of the
-COLMAP [`dev` branch](https://github.com/colmap/colmap/tree/dev). Using a previous COLMAP build might not work. Then
-clone the repository and its submodules:
+Clone the repository and its submodules:
 
 ```
 git clone --recursive git@github.com/LiXin97/pyorb.git
 ```
 
-And finally build PyCOLMAP:
+And finally build PyORB:
 
 ```bash
 cd pyorb
