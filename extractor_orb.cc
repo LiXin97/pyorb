@@ -18,8 +18,9 @@
 
 namespace py = pybind11;
 
+#define kdim 2
 
-py::dict extract(
+py::tuple extract(
         const py::array_t<uchar> img,
         const unsigned int num_points,
         const unsigned int num_levels,
@@ -40,21 +41,33 @@ py::dict extract(
     //    auto extractor = new openvslam::feature::orb_extractor(param, num_points);
     extractor->extract(mat, cv::Mat(), keypts, description);
 
+    // Allocate the arrays.
+    const int num_keypoints = keypts.size();
+    // Keypoints.
+    py::array_t<float> pykeypoints(
+            py::detail::any_container<ssize_t>(
+                    {num_keypoints, kdim}
+                    )
+    );
+    py::buffer_info pykeypoints_buf = pykeypoints.request();
+    float *pykeypoints_ptr = (float *)pykeypoints_buf.ptr;
+    // Scores.
+    py::array_t<float> pyscores(
+            py::detail::any_container<ssize_t>(
+                    {num_keypoints}
+                    )
+    );
+    py::buffer_info pyscores_buf = pyscores.request();
+    float *pyscores_ptr = (float *)pyscores_buf.ptr;
 
-    std::vector<Eigen::Vector3d> KeyPoints;
-
-    //    std::cout << "keypts.size() = " << keypts.size() << std::endl;
-
-    for (const auto &kpt: keypts) {
-        KeyPoints.emplace_back(kpt.pt.x, kpt.pt.y, kpt.response);
+    // Copy.
+    for (int i = 0; i < num_keypoints; ++i) {
+        float pt[2] = {keypts[i].pt.x, keypts[i].pt.y};
+        memcpy(pykeypoints_ptr + kdim * i, pt, kdim * sizeof(float));
+        pyscores_ptr[i] = keypts[i].response;
     }
 
-    // Success output dictionary.
-    py::dict success_dict;
-    success_dict["KeyPoints"] = KeyPoints;
-
-    return success_dict;
-
+    return py::make_tuple(pykeypoints, pyscores);
 }
 
 //py::dict extract(
@@ -78,7 +91,7 @@ py::dict extract(
 //
 //}
 
-py::dict extract_fromimg(
+py::tuple extract_fromimg(
         const std::string &img_path,
         const unsigned int num_points,
         const unsigned int num_levels,
@@ -96,18 +109,31 @@ py::dict extract_fromimg(
     //    auto extractor = new openvslam::feature::orb_extractor(param, num_points);
     extractor->extract(img, cv::Mat(), keypts, description);
 
+    // Allocate the arrays.
+    const int num_keypoints = keypts.size();
+    // Keypoints.
+    py::array_t<float> pykeypoints(
+            py::detail::any_container<ssize_t>(
+                    {num_keypoints, kdim}
+                    )
+    );
+    py::buffer_info pykeypoints_buf = pykeypoints.request();
+    float *pykeypoints_ptr = (float *)pykeypoints_buf.ptr;
+    // Scores.
+    py::array_t<float> pyscores(
+            py::detail::any_container<ssize_t>(
+                    {num_keypoints}
+                    )
+    );
+    py::buffer_info pyscores_buf = pyscores.request();
+    float *pyscores_ptr = (float *)pyscores_buf.ptr;
 
-    std::vector<Eigen::Vector3d> KeyPoints;
-
-    //    std::cout << "keypts.size() = " << keypts.size() << std::endl;
-
-    for (const auto &kpt: keypts) {
-        KeyPoints.emplace_back(kpt.pt.x, kpt.pt.y, kpt.response);
+    // Copy.
+    for (int i = 0; i < num_keypoints; ++i) {
+        float pt[2] = {keypts[i].pt.x, keypts[i].pt.y};
+        memcpy(pykeypoints_ptr + kdim * i, pt, kdim * sizeof(float));
+        pyscores_ptr[i] = keypts[i].response;
     }
 
-    // Success output dictionary.
-    py::dict success_dict;
-    success_dict["KeyPoints"] = KeyPoints;
-
-    return success_dict;
+    return py::make_tuple(pykeypoints, pyscores);
 }

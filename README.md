@@ -29,18 +29,17 @@ pip install .
 
 ## Extractor uniform ORB feature
 
-We can extractor orb feature from img path. featrue sorting as x, y, response
+We can extractor orb feature from img path. 
+
+feature [num_features, 2]
+scores [num_features, 1]
 
 ```python
 import pyorb
-import numpy as np
 import cv2
 
 img = cv2.imread({YOUR_IMG_PATH_STR_HERE})
-result = pyorb.extract_frompath({YOUR_IMG_PATH_STR_HERE})
-result = pyorb.extract(img)
-feature = np.array(result['KeyPoints'])
-
-print(feature.shape)
+features, scores = pyorb.extract_frompath({YOUR_IMG_PATH_STR_HERE})
+features, scores = pyorb.extract(img)
 ```
 
