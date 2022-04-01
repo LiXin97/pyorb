@@ -1,14 +1,14 @@
 """ Author: Xin Li """
 
 import os
-import re
-import sys
 import platform
+import re
 import subprocess
+import sys
+from distutils.version import LooseVersion
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-from distutils.version import LooseVersion
 
 
 class CMakeExtension(Extension):
@@ -76,7 +76,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name='pyorbfeature',
-    version='0.1.5',
+    version='0.1.7',
 
     author='xinli',
     author_email='lisin97@pku.edu.cn',

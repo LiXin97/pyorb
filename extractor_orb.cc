@@ -14,8 +14,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include <Eigen/Core>
-
 namespace py = pybind11;
 
 #define kdim 2

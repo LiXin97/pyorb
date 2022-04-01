@@ -3,6 +3,8 @@ project(PyORB)
 
 find_package(Eigen3)
 
+set(OpenCV_STATIC ON)
+SET(OpenCV_DIR "/home/xin/Documents/opencv-3.4.0/build_static")
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR} ${PROJECT_SOURCE_DIR})
 
