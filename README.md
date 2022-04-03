@@ -43,3 +43,4 @@ features, scores = pyorb.extract_frompath({YOUR_IMG_PATH_STR_HERE})
 features, scores = pyorb.extract(img)
 ```
 
+![image](https://user-images.githubusercontent.com/24710589/161433331-49c6be54-be57-41aa-8d2b-180d12243c8c.png)
